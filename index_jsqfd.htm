@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>QFD with javascript</title>
+
+	<meta charset="UTF-8">
+	<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="http://almende.github.io/chap-links-library/js/treegrid/treegrid.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://almende.github.io/chap-links-library/js/treegrid/treegrid.css">
+	<link rel="stylesheet" type="text/css" href="./jsqfd/jsqfd.css">
+	<script src="./jsqfd/jsqfd.js"></script>
+
+	<script>
+		window.onload = function() {
+			//JSqfd.init('data', null, false);
+			JSqfd.init(null, './example/example.json', false);
+			
+			// Print data in a treegrid (for debug)
+			JSqfd.read('data');
+			var newdata = JSqfd.getData();
+			var myContainer = 'mytreegrid';
+			// specify options
+			var options = {
+				"width": "800px",
+				"height": "400px"
+			};
+			// Instantiate our treegrid object.
+			var container = document.getElementById(myContainer);
+			// The class name of the TreeGrid is links.TreeGrid
+			var treegrid = new links.TreeGrid(container, options);
+			var mydata = new links.DataTable(newdata);
+
+			// Draw our treegrid with the created data and options 
+			treegrid.draw(mydata);
+			// End of tree grid
+		};
+
+		// handle input checkbox for option Dailog box
+		function handleClick(cb) {
+			if (cb.checked === true) {
+				JSqfd.drawDialogbox().render();
+			} else {
+				JSqfd.drawDialogbox().remove();
+			}
+		}
+	</script>
+</head>
+
+<body>
+	<div id="data" style="display: none;">
+		[ { "object": "what", "data": [ { "id":"r001", "name":"Leakage \u003C 3 Pa.s", "function":"To seal", "weight":1}, { "id":"r002", "name":"No damage (Energy 50 J)", "function":"To resist to mechanical environment", "weight":1}, { "id":"r003", "name":"Force\u003C5daN", "function":"To limit insertion load", "weight":1}, { "id":"r004", "name":"No damage (1000h @125°C)", "function":"To resist to fluid", "weight":1} ]},
+		{ "object": "how", "data": [
+		{ "id":"c001", "name":"Tore diameter", "component":"oring", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}, {"name": "Importance Rating", "value": "35"}]}]},
+		{ "id":"c003", "name":"Groove width", "component":"QC", "part":"assy", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c004", "name":"Groove depth", "component":"queue", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c016", "name":"Groove roughness", "component":"queue", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "2"}]}]},
+		{ "id":"c005", "name":"Wall thickness", "component":"queue", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c008", "name":"ID diameter", "component":"queue", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c009", "name":"ID diameter", "component":"oring stopper", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c006", "name":"Guidance length (before and after oring)", "component":"QC", "part":"assy", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}, {"name": "Importance Rating", "value": "52"}]}]},
+		{ "id":"c002", "name":"Compression / squeeze", "component":"QC", "part":"assy", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "2"}, {"name": "Importance Rating", "value": "42"}]}]},
+		{ "id":"c007", "name":"Material - Ultimate Tensile Strength", "component":"queue", "part":"part", "value":"", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c010", "name":"Material - elastic modulus", "component":"spring", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c011", "name":"Cross area", "component":"spring", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c012", "name":"Stiffness", "component":"spring", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c013", "name":"Hardness", "component":"oring", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]},
+		{ "id":"c014", "name":"Lubrification", "component":"oring", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "3"}]}]},
+		{ "id":"c015", "name":"Material", "component":"queue", "part":"part", "value": "", "others": [{"others": "importance", "data": [{"name": "Manufacturing difficulty", "value": "1"}]}]}
+		]},
+		{ "object": "correlation", "data": [ { "id":"001", "source":"c001", "target":"c002" }, { "id":"002",
+		"source":"c004", "target":"c002" }, { "id":"003", "source":"c008", "target":"c006" }, { "id":"004", "source":"c009", "target":"c006" }, { "id":"005", "source":"c010", "target":"c012" }, { "id":"006", "source":"c011", "target":"c012" }, { "id":"007",
+		"source":"c015", "target":"c007" } ]}, { "object": "relationship", "data": [ { "id":"l001", "source":"c002", "target":"r001", "value":"strong"}, { "id":"l012", "source":"c016", "target":"r001", "value":"strong"}, { "id":"l002", "source":"c006", "target":"r001",
+		"value":"weak"}, { "id":"l003", "source":"c005", "target":"r002", "value":"strong"}, { "id":"l004", "source":"c007", "target":"r002", "value":"strong"}, { "id":"l005", "source":"c006", "target":"r003", "value":"strong"}, { "id":"l006", "source":"c012",
+		"target":"r003", "value":"weak"}, { "id":"l007", "source":"c002", "target":"r003", "value":"weak"}, { "id":"l008", "source":"c013", "target":"r003", "value":"strong"}, { "id":"l009", "source":"c013", "target":"r001", "value":"strong"}, { "id":"l010",
+		"source":"c014", "target":"r003", "value":"strong"}, { "id":"l011", "source":"c015", "target":"r004", "value":"strong"} ]} ]
+	</div>
+
+	<div id="options">
+		<!-- Rounded switch -->
+		<label class="switch">Reduced: <input type="checkbox" onchange="JSqfd.init('data', null, this.checked)"></label>
+		<label class="switch">Dialog box: <input type="checkbox" onchange='handleClick(this);'></label>
+		<label class="switch">Legend: <input type="checkbox" onchange="JSqfd.drawLegend('status', this.checked)"></label>
+		<label class="switch">Layout flat: <input type="checkbox" onchange="JSqfd.changeTheme(this.checked)"></label>
+	</div>
+
+	<div id="test"><svg id="svg1" height="750" width="800"></svg></div>
+	<div id='status'></div>
+	<div id="mytreegrid"></div>
+</body>
+</html>
